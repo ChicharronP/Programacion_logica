@@ -4,14 +4,24 @@ from unificacion import unificacion
 
 
 
-def realizar_diagnotico(base_conocimiento, diagnostico_paciente):
-    diagnosticos_encontrados = []
+def realizar_diagnotico_recursivo(base_conocimiento, diagnostico_paciente):
     
-    for enfermedad, sintomas_de_la_enfermedad in base_conocimiento.items():
-        if unificacion(diagnostico_paciente, sintomas_de_la_enfermedad):
-            diagnosticos_encontrados.append(enfermedad)
-            
-    return diagnosticos_encontrados
+    lista_enfermedades = list(base_conocimiento.items())
+    
+    def _buscar_recursivo(enfermedades_restantes, paciente, encontrados):
+        
+        if not enfermedades_restantes:
+            return encontrados
+        
+        (enfermedad_actual, sintomas) = enfermedades_restantes[0]
+        resto_de_la_lista = enfermedades_restantes[1:]
+        
+        if unificacion(paciente, sintomas):
+            encontrados.append(enfermedad_actual)
+        
+        return _buscar_recursivo(resto_de_la_lista, paciente, encontrados)
+
+    return _buscar_recursivo(lista_enfermedades, diagnostico_paciente, [])
 
 
 if __name__ == "__main__":
