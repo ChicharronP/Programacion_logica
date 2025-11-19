@@ -54,21 +54,18 @@ def analizar_resultados():
     except FileNotFoundError:
         print("No se encontró el archivo CSV para analizar.")
 
-# --- Ejecución Principal ---
+# Main
 if __name__ == "__main__": 
     wine = load_wine()
     
-    # Limpieza inicial (opcional, para no mezclar con ejecuciones viejas)
     if os.path.exists('resultados_wine.csv'):
         os.remove('resultados_wine.csv')
 
     print("Generando datos...")
     for i in range(50):
         result = wine_tree(wine.data, wine.target)
-        # print(f"Iteración {i}: {round(result)}%") # Opcional: imprimir cada paso
         ajustar_csv(i, result)
     
     print("Proceso de guardado terminado.")
     
-    # Llamamos al nuevo método al finalizar
     analizar_resultados()
